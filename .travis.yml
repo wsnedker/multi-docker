@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t wsnedker/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run wsnedker/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t wsnedker/multi-client ./client
+  - docker build -t wsnedker/multi-nginx ./nginx
+  - docker build -t wsnedker/multi-server ./server
+  - docker build -t wsnedker/multi-worker ./worker
+  # login to docker
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # take images and push them to docker hun
+  - docker push wsnedker/multi-client
+  - docker push wsnedker/multi-nginx
+  - docker push wsnedker/multi-server
+  - docker push wsnedker/multi-worker
