@@ -10,7 +10,7 @@ class App extends Component {
       <Router>
         <div className="App">
           <header className="App-header">
-            <Link to="/">Home</Link>
+            <Link to="/">Sugar loaf (home)</Link>
             <Link to="/otherPage">Other Page</Link>
           </header>
           <div>
